@@ -11,12 +11,18 @@ import UIKit
 class ToDoListViewController: UITableViewController {
 
     var arrayDiCoseDaFare = ["Comprare verdura","Telefonare in sede","Andare a passeggio"]
+    
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        // MARK - Metodi TableView
+        if let articolo = defaults.array(forKey: "ToDoListArray") as? [String]{
+            arrayDiCoseDaFare = articolo
+        }
     }
+    
+        // MARK - Metodi TableView
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrayDiCoseDaFare.count
     }
@@ -52,6 +58,7 @@ class ToDoListViewController: UITableViewController {
         let alert = UIAlertController(title: "Aggiungi nuovo elemento", message: nil, preferredStyle: .alert)
         let action = UIAlertAction(title: "Aggiungi", style: .default) { (action) in
             self.arrayDiCoseDaFare.append(textField.text!)
+            self.defaults.set(self.arrayDiCoseDaFare, forKey: "ToDoListArray")
             self.tableView.reloadData()
             print("Success!")
         }
